@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Nov 05, 2025 at 01:25 AM
+-- Generation Time: Nov 05, 2025 at 01:39 PM
 -- Server version: 8.0.30
 -- PHP Version: 8.1.10
 
@@ -38,7 +38,7 @@ CREATE TABLE `admins` (
 --
 
 INSERT INTO `admins` (`id`, `username`, `password`) VALUES
-(1, 'admin', '$2y$10$T8G1s.F.A5b.y2.4.gB5fO/E.B2g6.Q.8/n5t.3.lB.4.g5n5h.C');
+(1, 'admin', '$2y$10$rW5qObWYdMz1DqRPT2GkSO2/lu8TZQRqDVZEZhROqPqoueTrSU.jy');
 
 -- --------------------------------------------------------
 
@@ -51,15 +51,6 @@ CREATE TABLE `categories` (
   `name` varchar(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
---
--- Dumping data for table `categories`
---
-
-INSERT INTO `categories` (`id`, `name`) VALUES
-(1, 'Buku'),
-(2, 'Model Kit'),
-(3, 'Vinyl');
-
 -- --------------------------------------------------------
 
 --
@@ -70,9 +61,9 @@ CREATE TABLE `items` (
   `id` int NOT NULL,
   `item_name` varchar(255) NOT NULL,
   `description` text,
-  `image_file` varchar(255) NOT NULL COMMENT 'Hanya nama file, cth: laskar.jpg',
-  `admin_id` int NOT NULL COMMENT 'Siapa admin yang menambah data ini',
-  `category_id` int DEFAULT NULL COMMENT 'Untuk fitur kategori Minggu 2 (Boleh NULL)',
+  `image_file` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `admin_id` int NOT NULL,
+  `category_id` int DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
@@ -81,9 +72,7 @@ CREATE TABLE `items` (
 --
 
 INSERT INTO `items` (`id`, `item_name`, `description`, `image_file`, `admin_id`, `category_id`, `created_at`) VALUES
-(1, 'Buku Laskar Pelangi', 'Kisah inspiratif dari Belitung...', 'laskar.jpg', 1, 1, '2025-11-05 01:25:02'),
-(2, 'Gundam RX-78-2', 'Model kit Master Grade...', 'gundam.jpg', 1, 2, '2025-11-05 01:25:02'),
-(3, 'Kaset Vinyl Pink Floyd', 'Album Dark Side of the Moon...', 'vinyl.png', 1, 3, '2025-11-05 01:25:02');
+(1, 'Vinyl Pink Floyd', 'Album Darkside of the Moon', '1_1762349506.jpg', 1, NULL, '2025-11-05 13:31:46');
 
 --
 -- Indexes for dumped tables
@@ -119,7 +108,7 @@ ALTER TABLE `items`
 -- AUTO_INCREMENT for table `admins`
 --
 ALTER TABLE `admins`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `categories`
