@@ -7,7 +7,7 @@ $query = "SELECT i.*, c.name as category_name
           FROM items i 
           LEFT JOIN categories c ON i.category_id = c.id 
           ORDER BY i.id DESC";
-$result = mysqli_query($conn, $query);
+$result = mysqli_query($koneksi, $query);
 ?>
 
 <!DOCTYPE html>
@@ -40,11 +40,11 @@ $result = mysqli_query($conn, $query);
         <div class="gallery">
             <?php while($row = mysqli_fetch_assoc($result)): ?>
             <div class="gallery-item">
-                <img src="../admin/uploads/<?php echo htmlspecialchars($row['image_file']); ?>" alt="<?php echo htmlspecialchars($row['image_file']); ?>" onerror="this.src='../admin/uploads/default.jpg'">
+                <img src="../uploads/<?php echo htmlspecialchars($row['image_file']); ?>" alt="<?php echo htmlspecialchars($row['image_file']); ?>" onerror="this.src='../uploads/default.jpg'">
                 <div class="gallery-item-info">
                     <h3 class="gallery-item-title"><?php echo htmlspecialchars($row['item_name']); ?></h3>
                     <p class="gallery-item-desc">
-                        <strong>Kategori:</strong> <?php echo htmlspecialchars($row['category_name']); ?><br>
+                        <!-- <strong>Kategori:</strong><?php echo htmlspecialchars($row['category_name']); ?><br> -->
                         <?php echo substr(htmlspecialchars($row['description']), 0, 100); ?>...
                     </p>
                     <a href="detail.php?id=<?php echo $row['id']; ?>" class="btn">Lihat Detail</a>

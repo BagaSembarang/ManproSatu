@@ -15,7 +15,7 @@ $query = "SELECT i.*, c.name as category_name
           FROM items i 
           LEFT JOIN categories c ON i.category_id = c.id 
           WHERE i.id = ?";
-$stmt = mysqli_prepare($conn, $query);
+$stmt = mysqli_prepare($koneksi, $query);
 mysqli_stmt_bind_param($stmt, 'i', $id);
 mysqli_stmt_execute($stmt);
 $result = mysqli_stmt_get_result($stmt);
@@ -54,19 +54,19 @@ $item = mysqli_fetch_assoc($result);
     <!-- Detail Content -->
     <div class="detail-container">
         <div class="detail-image-container">
-            <img src="../admin/uploads/<?php echo htmlspecialchars($item['image_file']); ?>" 
+            <img src="../uploads/<?php echo htmlspecialchars($item['image_file']); ?>" 
                  alt="<?php echo htmlspecialchars($item['item_name']); ?>" 
                  class="detail-image" 
-                 onerror="this.src='../admin/uploads/default.jpg'"
+                 onerror="this.src='../uploads/default.jpg'"
                  loading="lazy">
         </div>
         <div class="detail-content">
             <h1 class="detail-title"><?php echo htmlspecialchars($item['item_name']); ?></h1>
             <div class="detail-meta">
-                <span class="meta-item">
+                <!-- <span class="meta-item">
                     <i class="fas fa-tag"></i> 
                     <span><?php echo htmlspecialchars($item['category_name']); ?></span>
-                </span>
+                </span> -->
                 <span class="meta-separator">•</span>
                 <span class="meta-item">
                     <i class="fas fa-calendar-alt"></i> 
