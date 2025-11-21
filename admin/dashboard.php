@@ -2,16 +2,16 @@
 
 require_once '../koneksi.php';
 
-$sql = "SELECT * FROM items ORDER BY id DESC";
+$sql = "SELECT items.*, categories.name AS category_name 
+        FROM items 
+        LEFT JOIN categories ON items.category_id = categories.id 
+        ORDER BY items.id DESC";
 
 $result = $koneksi->query($sql);
 
-// Cek jika query gagal
 if (!$result) {
     die("Query Error: " . $koneksi->error);
 }
-
-// ===== AKHIR BAGIAN LOGIKA PHP =====
 ?>
 <!DOCTYPE html>
 <html lang="id">
@@ -72,63 +72,38 @@ if (!$result) {
                 <table class="min-w-full divide-y divide-gray-200">
                     <thead class="bg-gray-50">
                         <tr>
-                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ID</th>
-                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nama Item</th>
-                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Deskripsi</th>
-                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Gambar</th>
-                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Aksi</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">ID</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Nama Item</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Kategori</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Deskripsi</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Gambar</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Aksi</th>
                         </tr>
                     </thead>
                     <tbody class="bg-white divide-y divide-gray-200">
-                        
-                        <?php
-                        // 5. Looping data dari database
-                        if ($result->num_rows > 0) {
-                            // Ambil setiap baris data sebagai array asosiatif
-                            while($row = $result->fetch_assoc()) {
-                        ?>
-                                <!-- Baris Data (dibuat oleh PHP) -->
-                                <tr>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                                        <?php echo htmlspecialchars($row['id']); ?>
-                                    </td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
-                                        <?php echo htmlspecialchars($row['item_name']); ?>
-                                    </td>
-                                    <td class="px-6 py-4 text-sm text-gray-500 max-w-xs truncate" title="<?php echo htmlspecialchars($row['description']); ?>">
-                                        <?php echo htmlspecialchars($row['description']); ?>
-                                    </td>
-                                    <td class="px-6 py-4">
-                                        <img src="../uploads/<?php echo htmlspecialchars($row['image_file']); ?>" 
-                                            alt="<?php echo htmlspecialchars($row['item_name']); ?>" 
-                                            class="w-16 h-16 object-cover rounded shadow-sm">
-                                    </td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium space-x-2">
-                                        <!-- LINK AKSI DINAMIS -->
-                                        <a href="edit.php?id=<?php echo $row['id']; ?>" class="text-indigo-600 hover:text-indigo-900">Edit</a>
-                                        <!-- Tambahkan konfirmasi JS sederhana untuk Hapus -->
-                                        <a href="hapus.php?id=<?php echo $row['id']; ?>" class="text-red-600 hover:text-red-900" onclick="return confirm('Apakah Anda yakin ingin menghapus item ini?');">
-                                            Hapus
-                                        </a>
-                                    </td>
-                                </tr>
-                        <?php
-                            } // Akhir dari while loop
-                        } else {
-                            // Jika tidak ada data sama sekali
-                        ?>
+                        <?php if ($result->num_rows > 0): ?>
+                            <?php while($row = $result->fetch_assoc()): ?>
                             <tr>
-                                <td colspan="5" class="px-6 py-4 text-center text-sm text-gray-500">
-                                    Belum ada data. Silakan <a href="tambah.php" class="text-blue-600 hover:underline">Tambah Item Baru</a>.
+                                <td class="px-6 py-4 text-sm text-gray-900"><?= $row['id'] ?></td>
+                                <td class="px-6 py-4 text-sm text-gray-700 font-bold"><?= htmlspecialchars($row['item_name']) ?></td>
+                                
+                                <td class="px-6 py-4 text-sm text-blue-600">
+                                    <?= $row['category_name'] ? htmlspecialchars($row['category_name']) : '<span class="text-gray-400 italic">Tanpa Kategori</span>' ?>
+                                </td>
+
+                                <td class="px-6 py-4 text-sm text-gray-500 max-w-xs truncate"><?= htmlspecialchars($row['description']) ?></td>
+                                <td class="px-6 py-4">
+                                    <img src="../uploads/<?= htmlspecialchars($row['image_file']) ?>" class="w-16 h-16 object-cover rounded shadow-sm">
+                                </td>
+                                <td class="px-6 py-4 space-x-2 text-sm">
+                                    <a href="edit.php?id=<?= $row['id'] ?>" class="text-indigo-600 hover:text-indigo-900">Edit</a>
+                                    <a href="hapus.php?id=<?= $row['id'] ?>" class="text-red-600 hover:text-red-900" onclick="return confirm('Yakin?');">Hapus</a>
                                 </td>
                             </tr>
-                        <?php
-                        } // Akhir dari if
-                        
-                        // 6. Tutup koneksi database
-                        $koneksi->close();
-                        ?>
-                        
+                            <?php endwhile; ?>
+                        <?php else: ?>
+                            <tr><td colspan="6" class="text-center py-4">Belum ada data.</td></tr>
+                        <?php endif; ?>
                     </tbody>
                 </table>
             </div>
