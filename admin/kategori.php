@@ -78,9 +78,13 @@ $result_cat = $koneksi->query($sql_cat);
                     </tr>
                 </thead>
                 <tbody class="bg-white divide-y divide-gray-200">
-                    <?php while($row = $result_cat->fetch_assoc()): ?>
+                    <?php 
+                    $no = 1; 
+                    while($row = $result_cat->fetch_assoc()): 
+                    ?>
                     <tr>
-                        <td class="px-6 py-4 text-sm text-gray-900"><?= $row['id'] ?></td>
+                        <td class="px-6 py-4 text-sm text-gray-900"><?= $no++ ?></td> 
+                        
                         <td class="px-6 py-4 text-sm text-gray-700"><?= htmlspecialchars($row['name']) ?></td>
                     </tr>
                     <?php endwhile; ?>

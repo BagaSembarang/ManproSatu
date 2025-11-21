@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Nov 05, 2025 at 01:39 PM
+-- Generation Time: Nov 21, 2025 at 02:34 AM
 -- Server version: 8.0.30
 -- PHP Version: 8.1.10
 
@@ -51,6 +51,14 @@ CREATE TABLE `categories` (
   `name` varchar(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
+--
+-- Dumping data for table `categories`
+--
+
+INSERT INTO `categories` (`id`, `name`) VALUES
+(5, 'Game'),
+(4, 'Lagu');
+
 -- --------------------------------------------------------
 
 --
@@ -72,7 +80,7 @@ CREATE TABLE `items` (
 --
 
 INSERT INTO `items` (`id`, `item_name`, `description`, `image_file`, `admin_id`, `category_id`, `created_at`) VALUES
-(1, 'Vinyl Pink Floyd', 'Album Darkside of the Moon', '1_1762349506.jpg', 1, NULL, '2025-11-05 13:31:46');
+(1, 'Vinyl Pink Floyd', 'Album Darkside of the Moon', '1_1762349506.jpg', 1, 4, '2025-11-05 13:31:46');
 
 --
 -- Indexes for dumped tables
@@ -114,7 +122,7 @@ ALTER TABLE `admins`
 -- AUTO_INCREMENT for table `categories`
 --
 ALTER TABLE `categories`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `items`
